@@ -11,30 +11,27 @@ provider "azurerm" {
   # use_cli = true
 }
 
-resource "azurerm_postgresql_flexible_server" "myserverdb" {
-  name                = "myserverdbtest"
-  resource_group_name = "TerraformResourceGroup"
-  location            = "Central US"
-  version             = "16"
+module "postgresql" {
+  source = "./modules/postgresql"
 
-  # Credentials
-  administrator_login    = "postgres"
-  administrator_password = "YourP@ssw0rd123!"
+  server_name         = var.db_server_name
+  resource_group_name = var.resource_group_name
+  location            = var.location
 
-  # Tier & Compute
-  sku_name = "B_Standard_B2s"
+  administrator_password = var.db_admin_password
 
-  # Storage & Backup (now top-level)
-  storage_mb                   = 32768
-  backup_retention_days        = 7
-  geo_redundant_backup_enabled = false
-  auto_grow_enabled            = false
-
-  # Networking
+  postgresql_version            = "16"
+  administrator_login           = "postgres"
+  sku_name                      = "B_Standard_B2s"
+  storage_mb                    = 32768
+  backup_retention_days         = 7
+  geo_redundant_backup_enabled  = false
+  auto_grow_enabled             = false
   public_network_access_enabled = true
+  availability_zone             = "1"
 
-  # Availability Zone
-  zone = "1"
-
-  tags = {}
+  tags = {
+    Environment = "development"
+    ManagedBy   = "terraform"
+  }
 }

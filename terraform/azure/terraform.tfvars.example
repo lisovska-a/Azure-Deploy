@@ -1,0 +1,9 @@
+# Azure Provider Configuration
+
+# Resource Configuration
+resource_group_name = "TerraformResourceGroup"
+location           = "Central US"
+
+# Database Configuration
+db_server_name     = "myserverdbtest"  # Must be globally unique
+db_admin_password  = "YourP@ssw0rd123!"  # At least 8 characters 
